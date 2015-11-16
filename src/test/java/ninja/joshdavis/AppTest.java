@@ -25,21 +25,38 @@ public class AppTest {
         mrEd.setReplaceString("baz");
 
         String str = mrEd.edit("foobarfoo");
-        assertEquals(str, "bazbarfoo");
+        assertEquals("bazbarfoo", str);
 
         mrEd.setGlobalSearch(true);
         str = mrEd.edit("foobarfoo");
-        assertEquals(str, "bazbarbaz");
+        assertEquals("bazbarbaz", str);
 
         mrEd.setCaseInsensitiveSearch(true);
         str = mrEd.edit("FoobarfOo");
-        assertEquals(str, "bazbarbaz");
+        assertEquals("bazbarbaz", str);
 
         mrEd.setCaseInsensitiveSearch(false);
         mrEd.setLiteralSearch(false);
         mrEd.setSearchString("f.o");
         str = mrEd.edit("foobarfao");
-        assertEquals(str, "bazbarbaz");
+        assertEquals("bazbarbaz", str);
+
+        mrEd.setLiteralSearch(true);
+        mrEd.setSearchString("foo");
+        mrEd.setReplaceString("\\$1");
+        str = mrEd.edit("foobarfoo");
+        assertEquals("$1bar$1", str);
+        
+        mrEd.setLiteralSearch(false);
+        mrEd.setSearchString("([0-9]+)foo([0-9]+)");
+        
+        mrEd.setReplaceString("$1bar$2");
+        str = mrEd.edit("123foo456");
+        assertEquals("123bar456", str);
+
+        mrEd.setSearchString("([0-9]+)foo([0-9]+)");
+        mrEd.setReplaceString("$1bar\\$2");//Must escape $ and \ to get literal
+        str = mrEd.edit("123foo456");
+        assertEquals("123bar$2", str);
     }
-   
 }
