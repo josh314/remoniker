@@ -58,7 +58,10 @@ public class Editor {
     public String edit(String srcText) {
         Matcher m = searchPattern.matcher(srcText);
         String res;
-        if(globalSearch) {
+        if(!m.find()) {
+            res = "";
+        }
+        else if(globalSearch) {
             res = m.replaceAll(replaceString);
         }
         else {
