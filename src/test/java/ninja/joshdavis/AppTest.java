@@ -1,6 +1,6 @@
 package ninja.joshdavis;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
@@ -17,4 +17,29 @@ public class AppTest {
         FileTextArea srcFileTextArea= new FileTextArea();
         assertNotNull(srcFileTextArea);
     }
+    @Test
+    public void EditorTest() {
+        Editor mrEd = new Editor();
+        assertNotNull(mrEd);
+        mrEd.setSearchString("foo");
+        mrEd.setReplaceString("baz");
+
+        String str = mrEd.edit("foobarfoo");
+        assertEquals(str, "bazbarfoo");
+
+        mrEd.setGlobalSearch(true);
+        str = mrEd.edit("foobarfoo");
+        assertEquals(str, "bazbarbaz");
+
+        mrEd.setCaseInsensitiveSearch(true);
+        str = mrEd.edit("FoobarfOo");
+        assertEquals(str, "bazbarbaz");
+
+        mrEd.setCaseInsensitiveSearch(false);
+        mrEd.setLiteralSearch(false);
+        mrEd.setSearchString("f.o");
+        str = mrEd.edit("foobarfao");
+        assertEquals(str, "bazbarbaz");
+    }
+   
 }
