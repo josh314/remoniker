@@ -5,8 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class SrcTextArea extends JTextArea {
-    public SrcTextArea() {
+public class FileTextArea extends JTextArea {
+    public FileTextArea() {
         super();
         setEditable(false);
         setColumns(10);

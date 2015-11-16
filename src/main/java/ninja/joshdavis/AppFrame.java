@@ -9,16 +9,20 @@ import javax.swing.*;
  *
  */
 public class AppFrame extends JFrame {
-    private SrcTextArea srcTextArea;
+    private FileTextArea srcFileTextArea;
+    private FileTextArea destFileTextArea;
         
     public AppFrame() {
         super("Remoniker");
         setLayout(new FlowLayout());
 
-        srcTextArea = new SrcTextArea(); 
-        add(srcTextArea);        
+        srcFileTextArea = new FileTextArea(); 
+        add(srcFileTextArea);        
         //TODO: set handlers - update from directory contents        
 
+        destFileTextArea = new FileTextArea(); 
+        add(destFileTextArea);        
+        //TODO: set handlers - update from directory contents   
     }
 
 }

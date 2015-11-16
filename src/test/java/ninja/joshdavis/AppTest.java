@@ -13,8 +13,8 @@ public class AppTest {
         assertNotNull(frame);
     }
     @Test
-    public void SrcTextAreaTest() {
-        SrcTextArea srcTextArea= new SrcTextArea();
-        assertNotNull(srcTextArea);
+    public void FileTextAreaTest() {
+        FileTextArea srcFileTextArea= new FileTextArea();
+        assertNotNull(srcFileTextArea);
     }
 }
