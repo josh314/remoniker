@@ -13,9 +13,6 @@ import java.io.IOException;
 public class AppFrame extends JFrame {
     private FileTextArea srcFileTextArea;
     private FileTextArea destFileTextArea;
-    private String listingsText;
-    private String searchString;
-    private String replaceString;
     private Editor editor;
         
     public void setDirectory(String dirName) {
@@ -56,9 +53,8 @@ public class AppFrame extends JFrame {
 
         //
         editor = new Editor();
-        editor.setSearchString("e");
-        editor.setReplaceString("E");
-        editor.setGlobalSearch(true);
+        editor.setSearchString("");
+        editor.setReplaceString("");
 
         setDirectory("/");
     }
