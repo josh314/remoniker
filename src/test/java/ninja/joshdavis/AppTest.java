@@ -13,9 +13,9 @@ public class AppTest {
         assertNotNull(frame);
     }
     @Test
-    public void FileTextAreaTest() {
-        FileTextArea srcFileTextArea= new FileTextArea();
-        assertNotNull(srcFileTextArea);
+    public void FileListPaneTest() {
+        FileListPane srcFileListPane= new FileListPane();
+        assertNotNull(srcFileListPane);
     }
     @Test
     public void EditorTest() {
