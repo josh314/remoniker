@@ -16,8 +16,10 @@ public class Editor {
         caseInsensitiveSearch = false;
         literalSearch = true;
 
+        searchString = "";
+        replaceString = "";
         //Empty initial search and replace strings
-        
+        updatePattern();
     }
 
     private void updatePattern() {
