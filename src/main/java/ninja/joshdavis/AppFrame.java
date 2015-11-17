@@ -13,6 +13,7 @@ import java.io.IOException;
 public class AppFrame extends JFrame {
     private FileListPane srcFileListPane;
     private FileListPane destFileListPane;
+    private SearchInput searchInput;
     private Editor editor;
         
     public void setDirectory(String dirName) {
@@ -51,10 +52,10 @@ public class AppFrame extends JFrame {
         add(destFileListPane);        
         //TODO: set handlers - update from directory contents   
 
+        searchInput = new SearchInput("");
+        
         //
         editor = new Editor();
-        editor.setSearchString("");
-        editor.setReplaceString("");
 
         setDirectory("/");
     }
