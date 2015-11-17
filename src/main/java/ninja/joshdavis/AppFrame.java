@@ -11,8 +11,8 @@ import java.io.IOException;
  *
  */
 public class AppFrame extends JFrame {
-    private FileTextArea srcFileTextArea;
-    private FileTextArea destFileTextArea;
+    private FileListPane srcFileListPane;
+    private FileListPane destFileListPane;
     private Editor editor;
         
     public void setDirectory(String dirName) {
@@ -27,7 +27,7 @@ public class AppFrame extends JFrame {
         for(String file: contents) {
             srcText = srcText + file + "\n";//Portable line ending?
         }
-        srcFileTextArea.setText(srcText);
+        srcFileListPane.setText(srcText);
 
         String destText = "";
         for(String file: contents) {
@@ -36,19 +36,19 @@ public class AppFrame extends JFrame {
                 destText = destText + newName + "\n";
             }
         }
-        destFileTextArea.setText(destText);
+        destFileListPane.setText(destText);
     }
     
     public AppFrame() {
         super("Remoniker");
         setLayout(new FlowLayout());
 
-        srcFileTextArea = new FileTextArea();
-        add(srcFileTextArea);
+        srcFileListPane = new FileListPane();
+        add(srcFileListPane);
         //TODO: set handlers - update from directory contents        
 
-        destFileTextArea = new FileTextArea(); 
-        add(destFileTextArea);        
+        destFileListPane = new FileListPane(); 
+        add(destFileListPane);        
         //TODO: set handlers - update from directory contents   
 
         //

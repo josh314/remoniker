@@ -5,7 +5,17 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class FileTextArea extends JTextArea {
+public class FileListPane extends JTextArea {
+    private textArea JTextArea;
+
+    public FileListPane() {
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setColumns(10);
+        textArea.setRows(10);
+        
+    }
+    
     public FileTextArea() {
         super();
         setEditable(false);
