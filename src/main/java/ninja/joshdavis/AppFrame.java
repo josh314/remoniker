@@ -51,14 +51,17 @@ public class AppFrame extends JFrame {
     }
     
     private void updateFilePanes() {
-        String[] contents = currentDir.list();
+        File[] files = currentDir.listFiles();
         String srcText = "";
         String destText = "";
-        for(String file: contents) {
-            String newName = editor.edit(file);
-            if(newName != null && !newName.isEmpty()) {
-                srcText = srcText + file + "\n";
-                destText = destText + newName + "\n";
+        for(File file: files) {
+            if( !file.isHidden() || showHidden.isSelected() ) {
+                String srcName = file.getName();
+                String destName = editor.edit(srcName);
+                if(destName != null && !destName.isEmpty()) {
+                    srcText = srcText + srcName + "\n";
+                    destText = destText + destName + "\n";
+                }
             }
         }
         srcFileListPane.setText(srcText);
@@ -88,18 +91,20 @@ public class AppFrame extends JFrame {
         dirBrowseButton.addActionListener(dirChooserListener);
         add(dirBrowseButton);
 
-        setCurrentDir(new File(System.getProperty("user.home")));
-        
         searchInput = new TextField(20);
         replaceInput = new TextField(20);
+        
         ActionListener inputListener = new InputListener();
         searchInput.addActionListener(inputListener);
         replaceInput.addActionListener(inputListener);
         add(searchInput);
         add(replaceInput);
-
+        
         showHidden = new JCheckBox("Show hidden files");
+        showHidden.addActionListener(inputListener);
         add(showHidden);
+
+        setCurrentDir(new File(System.getProperty("user.home"))); 
     }
 
 }
