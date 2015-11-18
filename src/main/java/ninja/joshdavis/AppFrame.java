@@ -19,6 +19,7 @@ public class AppFrame extends JFrame {
     private JButton dirBrowseButton;
     private JFileChooser dirChooser;
     private File currentDir;
+    private JCheckBox showHidden;
 
     private class InputListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
@@ -96,6 +97,9 @@ public class AppFrame extends JFrame {
         replaceInput.addActionListener(inputListener);
         add(searchInput);
         add(replaceInput);
+
+        showHidden = new JCheckBox("Show hidden files");
+        add(showHidden);
     }
 
 }
