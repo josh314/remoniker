@@ -23,6 +23,7 @@ public class AppFrame extends JFrame {
     private JCheckBox globalSearch;
     private JCheckBox caseInsensitiveSearch;
     private JCheckBox regexSearch;
+    private JButton alterFiles;
 
 
     private class InputListener implements ActionListener {
@@ -47,6 +48,12 @@ public class AppFrame extends JFrame {
             if( file != null) {
                 setCurrentDir(file);
             }
+        }
+    }
+
+    private class AlterFilesListener implements ActionListener {
+        public void actionPerformed(ActionEvent ev) {
+
         }
     }
     
@@ -123,6 +130,11 @@ public class AppFrame extends JFrame {
         regexSearch.addActionListener(inputListener);
         add(regexSearch);
 
+        alterFiles = new JButton("Rename files");
+        add(alterFiles);
+        ActionListener alterFilesListener = new AlterFilesListener();
+        alterFiles.addActionListener(inputListener);
+            
         setCurrentDir(new File(System.getProperty("user.home"))); 
     }
 
