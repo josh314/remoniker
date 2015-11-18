@@ -20,6 +20,10 @@ public class AppFrame extends JFrame {
     private JFileChooser dirChooser;
     private File currentDir;
     private JCheckBox showHidden;
+    private JCheckBox globalSearch;
+    private JCheckBox caseInsensitiveSearch;
+    private JCheckBox regexSearch;
+
 
     private class InputListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
@@ -29,6 +33,9 @@ public class AppFrame extends JFrame {
             String replaceInputString = replaceInput.getText();
             editor.setSearchString(searchInputString);
             editor.setReplaceString(replaceInputString);
+            editor.setGlobalSearch(globalSearch.isSelected());
+            editor.setCaseInsensitiveSearch(caseInsensitiveSearch.isSelected());
+            editor.setLiteralSearch(!regexSearch.isSelected());
             updateFilePanes();
         }
     }
@@ -103,6 +110,18 @@ public class AppFrame extends JFrame {
         showHidden = new JCheckBox("Show hidden files");
         showHidden.addActionListener(inputListener);
         add(showHidden);
+
+        globalSearch = new JCheckBox("Global search");
+        globalSearch.addActionListener(inputListener);
+        add(globalSearch);
+
+        caseInsensitiveSearch = new JCheckBox("Case insensitive");
+        caseInsensitiveSearch.addActionListener(inputListener);
+        add(caseInsensitiveSearch);
+
+        regexSearch = new JCheckBox("Use regular expressions");
+        regexSearch.addActionListener(inputListener);
+        add(regexSearch);
 
         setCurrentDir(new File(System.getProperty("user.home"))); 
     }
