@@ -11,8 +11,8 @@ public class FileListPane extends JScrollPane{
     public FileListPane() {
         textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.setColumns(10);
-        textArea.setRows(10);
+        textArea.setColumns(24);
+        textArea.setRows(16);
 
         setViewportView(textArea);
     }

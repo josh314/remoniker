@@ -16,7 +16,8 @@ public class AppFrame extends JFrame {
     private Editor editor;
     private TextField searchInput;
     private TextField replaceInput;
-
+    private JButton dirBrowseButton;
+    private JFileChooser dirChooser;
     private File currentDir;
 
     private class InputListener implements ActionListener {
@@ -30,13 +31,22 @@ public class AppFrame extends JFrame {
             updateFilePanes();
         }
     }
+
+    private class DirChooserListener implements ActionListener {
+        public void actionPerformed(ActionEvent ev) {
+            dirChooser.showDialog(AppFrame.this, null);
+            File file = dirChooser.getSelectedFile();
+            if( file != null) {
+                setCurrentDir(file);
+            }
+        }
+    }
     
-    private void setCurrentDir(String filename) {
-        File file = new File(filename);
+    private void setCurrentDir(File file) {
         if(file.isDirectory()) {
             currentDir = file;
+            updateFilePanes();
         }
-        updateFilePanes();
     }
     
     private void updateFilePanes() {
@@ -65,9 +75,19 @@ public class AppFrame extends JFrame {
         destFileListPane = new FileListPane(); 
         add(destFileListPane);        
         //TODO: set handlers - update from directory contents   
-        editor = new Editor();
 
-        setCurrentDir("/");
+        editor = new Editor();
+        
+        dirChooser = new JFileChooser();
+        dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        dirChooser.setFileHidingEnabled(false);
+
+        ActionListener dirChooserListener = new DirChooserListener();
+        dirBrowseButton = new JButton("Browse");
+        dirBrowseButton.addActionListener(dirChooserListener);
+        add(dirBrowseButton);
+
+        setCurrentDir(new File(System.getProperty("user.home")));
         
         searchInput = new TextField(20);
         replaceInput = new TextField(20);
