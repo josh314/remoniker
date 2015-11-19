@@ -110,15 +110,17 @@ public class AppFrame extends JFrame {
     public AppFrame() {
         super("Remoniker");
         setLayout(new FlowLayout());
-
+        /* File panes */
         srcFileListPane = new FileListPane();
         addWithTitledBorder(srcFileListPane, "Files");
 
         destFileListPane = new FileListPane(); 
         addWithTitledBorder(destFileListPane, "Preview");        
 
+        /* Editor */
         editor = new Editor();
 
+        /* Directory pane */
         currentDirInput = new TextField(20);
         add(currentDirInput);
         
@@ -130,10 +132,12 @@ public class AppFrame extends JFrame {
         dirBrowseButton.addActionListener(dirChooserListener);
         add(dirBrowseButton);
 
+        /* Search & replace fields */
         ActionListener inputListener = new InputListener();
         searchInput = addNewTextField("Search", inputListener);
         replaceInput = addNewTextField("Replace", inputListener);
-        
+
+        /* Options */
         showHidden = new JCheckBox("Show hidden files");
         showHidden.addActionListener(inputListener);
         add(showHidden);
@@ -150,13 +154,16 @@ public class AppFrame extends JFrame {
         regexSearch.addActionListener(inputListener);
         add(regexSearch);
 
+        /* Rename action button */
         alterFiles = new JButton("Rename files");
         add(alterFiles);
         ActionListener alterFilesListener = new AlterFilesListener();
         alterFiles.addActionListener(alterFilesListener);
 
+        // Init rename map
         renameMap = new LinkedHashMap<File,File>();
-        
+
+        // Set initial directory
         setCurrentDir(new File(System.getProperty("user.home"))); 
     }
 
