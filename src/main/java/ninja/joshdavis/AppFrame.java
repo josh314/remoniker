@@ -21,6 +21,7 @@ public class AppFrame extends JFrame {
     private JButton dirBrowseButton;
     private JFileChooser dirChooser;
     private File currentDir;
+    private TextField currentDirInput;
     private JCheckBox showHidden;
     private JCheckBox globalSearch;
     private JCheckBox caseInsensitiveSearch;
@@ -99,8 +100,9 @@ public class AppFrame extends JFrame {
     }
 
     private void setCurrentDir(File file) {
-        if(file.isDirectory()) {
+        if(file.exists() && file.isDirectory()) {
             currentDir = file;
+            currentDirInput.setText(file.getAbsolutePath());
             updateFilePanes();
         }
     }
@@ -111,13 +113,14 @@ public class AppFrame extends JFrame {
 
         srcFileListPane = new FileListPane();
         addWithTitledBorder(srcFileListPane, "Files");
-        //TODO: set handlers - update from directory contents        
 
         destFileListPane = new FileListPane(); 
         addWithTitledBorder(destFileListPane, "Preview");        
-        //TODO: set handlers - update from directory contents   
 
         editor = new Editor();
+
+        currentDirInput = new TextField(20);
+        add(currentDirInput);
         
         dirChooser = new JFileChooser();
         dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
