@@ -28,18 +28,20 @@ public class AppFrame extends JFrame {
     private JButton alterFiles;
     private LinkedHashMap<File,File> renameMap;
 
+    private void updateEditor() {
+        String searchInputString = searchInput.getText();
+        String replaceInputString = replaceInput.getText();
+        //TODO: sanitize inputs
+        editor.setSearchString(searchInputString);
+        editor.setReplaceString(replaceInputString);
+        editor.setGlobalSearch(globalSearch.isSelected());
+        editor.setCaseInsensitiveSearch(caseInsensitiveSearch.isSelected());
+        editor.setLiteralSearch(!regexSearch.isSelected());
+    }
 
     private class InputListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
-            //TODO: sanitize inputs
-            
-            String searchInputString = searchInput.getText();
-            String replaceInputString = replaceInput.getText();
-            editor.setSearchString(searchInputString);
-            editor.setReplaceString(replaceInputString);
-            editor.setGlobalSearch(globalSearch.isSelected());
-            editor.setCaseInsensitiveSearch(caseInsensitiveSearch.isSelected());
-            editor.setLiteralSearch(!regexSearch.isSelected());
+            updateEditor();
             updateFilePanes();
         }
     }
@@ -62,7 +64,10 @@ public class AppFrame extends JFrame {
                 for(Entry<File,File> entry: renameMap.entrySet()) {
                     entry.getKey().renameTo(entry.getValue());
                 }
-                //TODO: Reset/update file panes
+                searchInput.setText("");
+                replaceInput.setText("");
+                updateEditor();
+                updateFilePanes();
             }
         }
     }
