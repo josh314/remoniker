@@ -20,8 +20,8 @@ public class AppFrame extends JFrame {
     private TextField replaceInput;
     private JButton dirBrowseButton;
     private JFileChooser dirChooser;
+    private TextField dirInput;
     private File currentDir;
-    private TextField currentDirInput;
     private JCheckBox showHidden;
     private JCheckBox globalSearch;
     private JCheckBox caseInsensitiveSearch;
@@ -33,17 +33,6 @@ public class AppFrame extends JFrame {
         public void actionPerformed(ActionEvent ev) {
             updateEditor();
             updateFilePanes();
-        }
-    }
-
-    private class DirChooserListener implements ActionListener {
-        public void actionPerformed(ActionEvent ev) {
-            dirChooser.setFileHidingEnabled(!showHidden.isSelected());
-            dirChooser.showDialog(AppFrame.this, null);
-            File file = dirChooser.getSelectedFile();
-            if(file != null) {
-                setCurrentDir(file);
-            }
         }
     }
 
@@ -59,6 +48,34 @@ public class AppFrame extends JFrame {
                 updateEditor();
                 updateFilePanes();
             }
+        }
+    }
+
+    private class DirChooserListener implements ActionListener {
+        public void actionPerformed(ActionEvent ev) {
+            dirChooser.setFileHidingEnabled(!showHidden.isSelected());
+            dirChooser.showDialog(AppFrame.this, null);
+            File file = dirChooser.getSelectedFile();
+            setCurrentDir(file);
+        }
+    }
+
+    private class DirInputListener implements ActionListener {
+        public void actionPerformed(ActionEvent ev) {
+            File file = new File(dirInput.getText());
+            setCurrentDir(file);
+        }
+    }
+
+    private void setCurrentDir(File file) {
+        if(file != null && file.exists() && file.isDirectory()) {
+            currentDir = file;
+            dirInput.setText(file.getAbsolutePath());
+            updateFilePanes();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, file.getAbsolutePath()+ " is not a valid directory.", "File error", JOptionPane.ERROR_MESSAGE);
+            dirInput.setText(currentDir.getAbsolutePath());
         }
     }
 
@@ -81,7 +98,7 @@ public class AppFrame extends JFrame {
                 String destName = editor.edit(srcFile.getName());
                 if(destName != null && !destName.isEmpty()) {
                     File destFile = new File(currentDir,destName);
-                    renameMap.put(srcFile,destFile);   
+                    renameMap.put(srcFile,destFile);
                 }
             }
         }
@@ -99,14 +116,6 @@ public class AppFrame extends JFrame {
         destFileListPane.setText(destText);
     }
 
-    private void setCurrentDir(File file) {
-        if(file.exists() && file.isDirectory()) {
-            currentDir = file;
-            currentDirInput.setText(file.getAbsolutePath());
-            updateFilePanes();
-        }
-    }
-
     public AppFrame() {
         super("Remoniker");
         setLayout(new FlowLayout());
@@ -114,8 +123,8 @@ public class AppFrame extends JFrame {
         srcFileListPane = new FileListPane();
         addWithTitledBorder(srcFileListPane, "Files");
 
-        destFileListPane = new FileListPane(); 
-        addWithTitledBorder(destFileListPane, "Preview");        
+        destFileListPane = new FileListPane();
+        addWithTitledBorder(destFileListPane, "Preview");
 
         /* Editor */
         editor = new Editor();
@@ -125,8 +134,10 @@ public class AppFrame extends JFrame {
         dirPane.setBorder(BorderFactory.createTitledBorder("Current directory"));
         add(dirPane);
 
-        currentDirInput = new TextField(20);
-        dirPane.add(currentDirInput);
+        dirInput = new TextField(20);
+        dirPane.add(dirInput);
+        ActionListener dirInputListener = new DirInputListener();
+        dirInput.addActionListener(dirInputListener);
         
         dirChooser = new JFileChooser();
         dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -168,7 +179,7 @@ public class AppFrame extends JFrame {
         renameMap = new LinkedHashMap<File,File>();
 
         // Set initial directory
-        setCurrentDir(new File(System.getProperty("user.home"))); 
+        setCurrentDir(new File(System.getProperty("user.home")));
     }
 
     private void addWithTitledBorder(Component comp, String title) {
@@ -184,5 +195,4 @@ public class AppFrame extends JFrame {
         addWithTitledBorder(res,title);
         return res;
     }
-    
 }
