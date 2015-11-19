@@ -57,9 +57,12 @@ public class AppFrame extends JFrame {
 
     private class AlterFilesListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
-            //TODO: Are you sure?
-            for(Entry<File,File> entry: renameMap.entrySet()) {
-                entry.getKey().renameTo(entry.getValue());
+            int confirmOption = JOptionPane.showConfirmDialog(null, "Confirm file modifications?", "Are you sure?", JOptionPane.OK_CANCEL_OPTION);
+            if(confirmOption == JOptionPane.OK_OPTION) {
+                for(Entry<File,File> entry: renameMap.entrySet()) {
+                    entry.getKey().renameTo(entry.getValue());
+                }
+                //TODO: Reset/update file panes
             }
         }
     }
