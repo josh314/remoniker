@@ -127,14 +127,9 @@ public class AppFrame extends JFrame {
         dirBrowseButton.addActionListener(dirChooserListener);
         add(dirBrowseButton);
 
-        searchInput = new TextField(20);
-        replaceInput = new TextField(20);
-        
         ActionListener inputListener = new InputListener();
-        searchInput.addActionListener(inputListener);
-        replaceInput.addActionListener(inputListener);
-        addWithTitledBorder(searchInput,"Search");
-        addWithTitledBorder(replaceInput,"Replace");
+        searchInput = addNewTextField("Search", inputListener);
+        replaceInput = addNewTextField("Replace", inputListener);
         
         showHidden = new JCheckBox("Show hidden files");
         showHidden.addActionListener(inputListener);
@@ -167,6 +162,13 @@ public class AppFrame extends JFrame {
         pane.setBorder(BorderFactory.createTitledBorder(title));
         pane.add(comp);
         add(pane);
+    }
+
+    private TextField addNewTextField(String title, ActionListener listener) {
+        TextField res = new TextField(20);
+        res.addActionListener(listener);
+        addWithTitledBorder(res,title);
+        return res;
     }
     
 }
