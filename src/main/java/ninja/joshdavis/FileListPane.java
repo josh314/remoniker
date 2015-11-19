@@ -19,5 +19,6 @@ public class FileListPane extends JScrollPane{
 
     public void setText(String s) {
         textArea.setText(s);
+        textArea.setCaretPosition(0);
     }
  }
