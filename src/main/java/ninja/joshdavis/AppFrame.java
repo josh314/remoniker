@@ -46,6 +46,7 @@ public class AppFrame extends JFrame {
 
     private class DirChooserListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
+            dirChooser.setFileHidingEnabled(!showHidden.isSelected());
             dirChooser.showDialog(AppFrame.this, null);
             File file = dirChooser.getSelectedFile();
             if(file != null) {
@@ -76,7 +77,7 @@ public class AppFrame extends JFrame {
             if( !srcFile.isHidden() || showHidden.isSelected() ) {
                 String destName = editor.edit(srcFile.getName());
                 if(destName != null && !destName.isEmpty()) {
-                    File destFile = new File(destName);
+                    File destFile = new File(currentDir,destName);
                     renameMap.put(srcFile,destFile);   
                 }
             }
@@ -88,8 +89,8 @@ public class AppFrame extends JFrame {
         String srcText = "";
         String destText = "";
         for(Entry<File,File> entry: renameMap.entrySet()) {
-            srcText = srcText + entry.getKey() + "\n";
-            destText = destText + entry.getValue() + "\n";
+            srcText = srcText + entry.getKey().getName() + "\n";
+            destText = destText + entry.getValue().getName() + "\n";
         }
         srcFileListPane.setText(srcText);
         destFileListPane.setText(destText);
@@ -111,7 +112,6 @@ public class AppFrame extends JFrame {
         
         dirChooser = new JFileChooser();
         dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        dirChooser.setFileHidingEnabled(false);
 
         ActionListener dirChooserListener = new DirChooserListener();
         dirBrowseButton = new JButton("Browse");
@@ -148,7 +148,7 @@ public class AppFrame extends JFrame {
         ActionListener alterFilesListener = new AlterFilesListener();
         alterFiles.addActionListener(alterFilesListener);
 
-        renameMap = new LinkedHashMap<File, File>();
+        renameMap = new LinkedHashMap<File,File>();
         
         setCurrentDir(new File(System.getProperty("user.home"))); 
     }
