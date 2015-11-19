@@ -6,6 +6,8 @@ import javax.swing.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 /**
  * Main window manager
  *
@@ -24,6 +26,7 @@ public class AppFrame extends JFrame {
     private JCheckBox caseInsensitiveSearch;
     private JCheckBox regexSearch;
     private JButton alterFiles;
+    private LinkedHashMap<File,File> renameMap;
 
 
     private class InputListener implements ActionListener {
@@ -45,7 +48,7 @@ public class AppFrame extends JFrame {
         public void actionPerformed(ActionEvent ev) {
             dirChooser.showDialog(AppFrame.this, null);
             File file = dirChooser.getSelectedFile();
-            if( file != null) {
+            if(file != null) {
                 setCurrentDir(file);
             }
         }
@@ -53,30 +56,40 @@ public class AppFrame extends JFrame {
 
     private class AlterFilesListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
-
+            for(Entry<File,File> entry: renameMap.entrySet()) {
+                entry.getKey().renameTo(entry.getValue());
+            }
         }
     }
-    
+
     private void setCurrentDir(File file) {
         if(file.isDirectory()) {
             currentDir = file;
             updateFilePanes();
         }
     }
-    
-    private void updateFilePanes() {
-        File[] files = currentDir.listFiles();
-        String srcText = "";
-        String destText = "";
-        for(File file: files) {
-            if( !file.isHidden() || showHidden.isSelected() ) {
-                String srcName = file.getName();
-                String destName = editor.edit(srcName);
+
+    private void updateRenameMap() {
+        renameMap.clear();
+        File[] allFiles = currentDir.listFiles();
+        for(File srcFile: allFiles) {
+            if( !srcFile.isHidden() || showHidden.isSelected() ) {
+                String destName = editor.edit(srcFile.getName());
                 if(destName != null && !destName.isEmpty()) {
-                    srcText = srcText + srcName + "\n";
-                    destText = destText + destName + "\n";
+                    File destFile = new File(destName);
+                    renameMap.put(srcFile,destFile);   
                 }
             }
+        }
+    }
+
+    private void updateFilePanes() {
+        updateRenameMap();
+        String srcText = "";
+        String destText = "";
+        for(Entry<File,File> entry: renameMap.entrySet()) {
+            srcText = srcText + entry.getKey() + "\n";
+            destText = destText + entry.getValue() + "\n";
         }
         srcFileListPane.setText(srcText);
         destFileListPane.setText(destText);
@@ -133,8 +146,10 @@ public class AppFrame extends JFrame {
         alterFiles = new JButton("Rename files");
         add(alterFiles);
         ActionListener alterFilesListener = new AlterFilesListener();
-        alterFiles.addActionListener(inputListener);
-            
+        alterFiles.addActionListener(alterFilesListener);
+
+        renameMap = new LinkedHashMap<File, File>();
+        
         setCurrentDir(new File(System.getProperty("user.home"))); 
     }
 
