@@ -121,8 +121,12 @@ public class AppFrame extends JFrame {
         editor = new Editor();
 
         /* Directory pane */
+        JPanel dirPane = new JPanel();
+        dirPane.setBorder(BorderFactory.createTitledBorder("Current directory"));
+        add(dirPane);
+
         currentDirInput = new TextField(20);
-        add(currentDirInput);
+        dirPane.add(currentDirInput);
         
         dirChooser = new JFileChooser();
         dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -130,7 +134,7 @@ public class AppFrame extends JFrame {
         ActionListener dirChooserListener = new DirChooserListener();
         dirBrowseButton = new JButton("Browse");
         dirBrowseButton.addActionListener(dirChooserListener);
-        add(dirBrowseButton);
+        dirPane.add(dirBrowseButton);
 
         /* Search & replace fields */
         ActionListener inputListener = new InputListener();
