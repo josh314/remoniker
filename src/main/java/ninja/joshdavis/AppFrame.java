@@ -57,6 +57,7 @@ public class AppFrame extends JFrame {
 
     private class AlterFilesListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
+            //TODO: Are you sure?
             for(Entry<File,File> entry: renameMap.entrySet()) {
                 entry.getKey().renameTo(entry.getValue());
             }
@@ -101,11 +102,11 @@ public class AppFrame extends JFrame {
         setLayout(new FlowLayout());
 
         srcFileListPane = new FileListPane();
-        add(srcFileListPane);
+        addWithTitledBorder(srcFileListPane, "Files");
         //TODO: set handlers - update from directory contents        
 
         destFileListPane = new FileListPane(); 
-        add(destFileListPane);        
+        addWithTitledBorder(destFileListPane, "Preview");        
         //TODO: set handlers - update from directory contents   
 
         editor = new Editor();
@@ -124,8 +125,8 @@ public class AppFrame extends JFrame {
         ActionListener inputListener = new InputListener();
         searchInput.addActionListener(inputListener);
         replaceInput.addActionListener(inputListener);
-        add(searchInput);
-        add(replaceInput);
+        addWithTitledBorder(searchInput,"Search");
+        addWithTitledBorder(replaceInput,"Replace");
         
         showHidden = new JCheckBox("Show hidden files");
         showHidden.addActionListener(inputListener);
@@ -153,4 +154,11 @@ public class AppFrame extends JFrame {
         setCurrentDir(new File(System.getProperty("user.home"))); 
     }
 
+    private void addWithTitledBorder(Component comp, String title) {
+        JPanel pane = new JPanel();
+        pane.setBorder(BorderFactory.createTitledBorder(title));
+        pane.add(comp);
+        add(pane);
+    }
+    
 }
