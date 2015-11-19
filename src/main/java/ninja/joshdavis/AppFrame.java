@@ -28,17 +28,6 @@ public class AppFrame extends JFrame {
     private JButton alterFiles;
     private LinkedHashMap<File,File> renameMap;
 
-    private void updateEditor() {
-        String searchInputString = searchInput.getText();
-        String replaceInputString = replaceInput.getText();
-        //TODO: sanitize inputs
-        editor.setSearchString(searchInputString);
-        editor.setReplaceString(replaceInputString);
-        editor.setGlobalSearch(globalSearch.isSelected());
-        editor.setCaseInsensitiveSearch(caseInsensitiveSearch.isSelected());
-        editor.setLiteralSearch(!regexSearch.isSelected());
-    }
-
     private class InputListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
             updateEditor();
@@ -72,11 +61,15 @@ public class AppFrame extends JFrame {
         }
     }
 
-    private void setCurrentDir(File file) {
-        if(file.isDirectory()) {
-            currentDir = file;
-            updateFilePanes();
-        }
+    private void updateEditor() {
+        String searchInputString = searchInput.getText();
+        String replaceInputString = replaceInput.getText();
+        //TODO: sanitize inputs
+        editor.setSearchString(searchInputString);
+        editor.setReplaceString(replaceInputString);
+        editor.setGlobalSearch(globalSearch.isSelected());
+        editor.setCaseInsensitiveSearch(caseInsensitiveSearch.isSelected());
+        editor.setLiteralSearch(!regexSearch.isSelected());
     }
 
     private void updateRenameMap() {
@@ -104,7 +97,14 @@ public class AppFrame extends JFrame {
         srcFileListPane.setText(srcText);
         destFileListPane.setText(destText);
     }
-    
+
+    private void setCurrentDir(File file) {
+        if(file.isDirectory()) {
+            currentDir = file;
+            updateFilePanes();
+        }
+    }
+
     public AppFrame() {
         super("Remoniker");
         setLayout(new FlowLayout());
