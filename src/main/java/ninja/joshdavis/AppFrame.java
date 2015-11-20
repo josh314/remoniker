@@ -129,7 +129,7 @@ public class AppFrame extends JFrame {
         /* Editor */
         editor = new Editor();
 
-        /* Directory pane */
+        /* Directory choosing pane */
         JPanel dirPane = new JPanel();
         dirPane.setBorder(BorderFactory.createTitledBorder("Current directory"));
         add(dirPane);
@@ -153,21 +153,25 @@ public class AppFrame extends JFrame {
         replaceInput = addNewTextField("Replace", inputListener);
 
         /* Options */
+        JPanel optionsPane = new JPanel(new GridLayout(4,1));
+        optionsPane.setBorder(BorderFactory.createTitledBorder("Options"));
+        add(optionsPane);
+        
         showHidden = new JCheckBox("Show hidden files");
         showHidden.addActionListener(inputListener);
-        add(showHidden);
+        optionsPane.add(showHidden);
 
         globalSearch = new JCheckBox("Global search");
         globalSearch.addActionListener(inputListener);
-        add(globalSearch);
+        optionsPane.add(globalSearch);
 
         caseInsensitiveSearch = new JCheckBox("Case insensitive");
         caseInsensitiveSearch.addActionListener(inputListener);
-        add(caseInsensitiveSearch);
+        optionsPane.add(caseInsensitiveSearch);
 
         regexSearch = new JCheckBox("Use regular expressions");
         regexSearch.addActionListener(inputListener);
-        add(regexSearch);
+        optionsPane.add(regexSearch);
 
         /* Rename action button */
         alterFiles = new JButton("Rename files");
