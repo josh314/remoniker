@@ -29,6 +29,23 @@ public class AppFrame extends JFrame {
     private JButton alterFiles;
     private LinkedHashMap<File,File> renameMap;
 
+    private class OptionsPanel extends JPanel {
+        private ActionListener listener;
+
+        public OptionsPanel(ActionListener aListener) {
+            super(new GridLayout(4,1));
+            listener = aListener;
+            setBorder(BorderFactory.createTitledBorder("Options"));
+        }
+        
+        public JCheckBox addNewOption(String title) {
+            JCheckBox res = new JCheckBox(title);
+            res.addActionListener(listener);
+            add(res);
+            return res;
+        }
+    }
+    
     private class InputListener implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
             updateEditor();
@@ -152,26 +169,13 @@ public class AppFrame extends JFrame {
         searchInput = addNewTextField("Search", inputListener);
         replaceInput = addNewTextField("Replace", inputListener);
 
-        /* Options */
-        JPanel optionsPane = new JPanel(new GridLayout(4,1));
-        optionsPane.setBorder(BorderFactory.createTitledBorder("Options"));
-        add(optionsPane);
-        
-        showHidden = new JCheckBox("Show hidden files");
-        showHidden.addActionListener(inputListener);
-        optionsPane.add(showHidden);
-
-        globalSearch = new JCheckBox("Global search");
-        globalSearch.addActionListener(inputListener);
-        optionsPane.add(globalSearch);
-
-        caseInsensitiveSearch = new JCheckBox("Case insensitive");
-        caseInsensitiveSearch.addActionListener(inputListener);
-        optionsPane.add(caseInsensitiveSearch);
-
-        regexSearch = new JCheckBox("Use regular expressions");
-        regexSearch.addActionListener(inputListener);
-        optionsPane.add(regexSearch);
+        /* Options panel */
+        OptionsPanel options = new OptionsPanel(inputListener);
+        showHidden =  options.addNewOption("Show hidden files");
+        globalSearch = options.addNewOption("Global search");
+        caseInsensitiveSearch = options.addNewOption("Case insensitive");
+        regexSearch = options.addNewOption("Use regular expressions");
+        add(options);
 
         /* Rename action button */
         alterFiles = new JButton("Rename files");
