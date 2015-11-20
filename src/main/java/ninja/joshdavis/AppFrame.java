@@ -117,7 +117,7 @@ public class AppFrame extends JFrame {
     }
 
     public AppFrame() {
-        super("Remoniker");
+        setTitle("Remoniker");
         setLayout(new FlowLayout());
         /* File panes */
         srcFileListPane = new FileListPane();
